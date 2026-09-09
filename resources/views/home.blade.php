@@ -63,25 +63,32 @@
             <p>Cotações acima do mercado e saques rápidos para quem joga com estratégia.</p>
         </div>
 
-        <div class="table-panel reveal">
-            <div class="table-responsive">
-                <table class="table cotacao-table mb-0">
-                    <thead>
-                        <tr>
-                            <th scope="col">Cotação</th>
-                            <th scope="col" class="text-end">Valor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($site['cotacoes'] as $row)
-                            <tr>
-                                <td>{{ $row['nome'] }}</td>
-                                <td class="text-end valor">R$ {{ $row['valor'] }}</td>
-                            </tr>
+        @php
+            $cotacoesLeft = array_slice($site['cotacoes'], 0, 8);
+            $cotacoesRight = array_slice($site['cotacoes'], 8);
+        @endphp
+        <div class="row g-3 g-lg-4 align-items-start">
+            @foreach ([$cotacoesLeft, $cotacoesRight] as $chunk)
+                <div class="col-12 col-lg-6">
+                    <div class="cotacao-board reveal">
+                        @foreach ($chunk as $row)
+                            <div class="cotacao-row">
+                                <div class="cotacao-row__main">
+                                    <span class="cotacao-row__icon" aria-hidden="true">
+                                        @if (($row['icon'] ?? '') === 'badge-2')
+                                            <span class="cotacao-badge-2">2</span>
+                                        @else
+                                            <i class="fa-solid {{ $row['icon'] }}"></i>
+                                        @endif
+                                    </span>
+                                    <span class="cotacao-row__name">{{ $row['nome'] }}</span>
+                                </div>
+                                <div class="cotacao-row__value">{{ $row['valor'] }}</div>
+                            </div>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
 
         <div class="text-center mt-4 reveal">
