@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Águia Prime Loterias — cotações acima do mercado, saques rápidos via PIX e plataforma segura.">
+    <meta name="description" content="{{ $settings->description ?? 'Águia Prime Loterias — cotações acima do mercado, saques rápidos via PIX e plataforma segura.' }}">
+    @if (!empty($settings->meta_keywords))
+        <meta name="keywords" content="{{ $settings->meta_keywords }}">
+    @endif
     <meta name="theme-color" content="#0B1220">
-    <title>@yield('title', config('site.name'))</title>
+    <title>@yield('title', $settings->title ?? config('site.name'))</title>
 
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,16 +21,16 @@
     @stack('head')
 </head>
 <body>
-    @include('partials.header')
+    @include('site.partials.header')
 
     <main>
         @yield('content')
     </main>
 
-    @include('partials.footer')
+    @include('site.partials.footer')
 
     <div class="whatsapp_futuante pulsaDelay animate__animated animate__tada">
-        <a href="{{ config('site.vip_url') }}" target="_blank" rel="noopener" aria-label="Grupo VIP WhatsApp">
+        <a href="{{ $settings->whatsapp_url ?? config('site.vip_url') }}" target="_blank" rel="noopener" aria-label="Grupo VIP WhatsApp">
             <i class="fab fa-whatsapp"></i>
         </a>
     </div>

@@ -1,8 +1,9 @@
-@extends('layouts.app')
+@extends('site.base_site')
 
-@section('title', $site['name'] . ' — Cotações e saques rápidos')
+@section('title', ($settings->title ?? $site['name']) . ' — Cotações e saques rápidos')
 
 @section('content')
+@php $videoUrl = $settings->video_embed_url; @endphp
 {{-- HERO --}}
 <section class="hero" id="inicio">
     <div class="hero__media" data-parallax>
@@ -19,17 +20,20 @@
             <span><i class="fa-solid fa-shield-halved"></i> Plataforma segura</span>
         </div>
         <div class="hero__cta reveal">
-            <a class="btn btn-gold btn-lg" href="{{ $site['register_url'] }}" target="_blank" rel="noopener">
+            <a class="btn btn-gold btn-lg" href="{{ $settings->platform_url ?? $site['register_url'] }}" target="_blank" rel="noopener">
                 Cadastrar agora <i class="fa-solid fa-arrow-right ms-2"></i>
             </a>
-            <a class="btn btn-ghost btn-lg" href="#video">Assistir apresentação</a>
+            @if ($videoUrl)
+                <a class="btn btn-ghost btn-lg" href="#video">Assistir apresentação</a>
+            @endif
         </div>
     </div>
-    <a href="#video" class="hero__scroll" aria-label="Rolar para baixo">
+    <a href="{{ $videoUrl ? '#video' : '#cotacoes' }}" class="hero__scroll" aria-label="Rolar para baixo">
         <i class="fa-solid fa-chevron-down"></i>
     </a>
 </section>
 
+@if ($videoUrl)
 {{-- VÍDEO --}}
 <section class="section section--dark" id="video">
     <div class="container">
@@ -39,20 +43,13 @@
             <p>Veja como funciona a plataforma e por que milhares de jogadores escolhem a Águia.</p>
         </div>
         <div class="video-frame reveal">
-            @if (!empty($site['video_url']))
-                <div class="ratio ratio-16x9">
-                    <iframe src="{{ $site['video_url'] }}" title="Vídeo Águia Prime Loterias" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                </div>
-            @else
-                <div class="video-placeholder">
-                    <i class="fa-solid fa-circle-play"></i>
-                    <p>Espaço reservado para o vídeo de apresentação</p>
-                    <small>Configure <code>AGUIA_VIDEO_URL</code> no arquivo .env</small>
-                </div>
-            @endif
+            <div class="ratio ratio-16x9">
+                <iframe src="{{ $videoUrl }}" title="Vídeo Águia Prime Loterias" allowfullscreen loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+            </div>
         </div>
     </div>
 </section>
+@endif
 
 {{-- COTAÇÕES --}}
 <section class="section" id="cotacoes">
@@ -64,8 +61,11 @@
         </div>
 
         @php
-            $cotacoesLeft = array_slice($site['cotacoes'], 0, 8);
-            $cotacoesRight = array_slice($site['cotacoes'], 8);
+            $cotacoesList = $cotacoes->isNotEmpty()
+                ? $cotacoes->map(fn ($c) => ['nome' => $c->nome, 'valor' => $c->valor, 'icon' => $c->icon])->all()
+                : $site['cotacoes'];
+            $cotacoesLeft = array_slice($cotacoesList, 0, (int) ceil(count($cotacoesList) / 2));
+            $cotacoesRight = array_slice($cotacoesList, (int) ceil(count($cotacoesList) / 2));
         @endphp
         <div class="row g-3 g-lg-4 align-items-start">
             @foreach ([$cotacoesLeft, $cotacoesRight] as $chunk)
@@ -92,7 +92,7 @@
         </div>
 
         <div class="text-center mt-4 reveal">
-            <a class="btn btn-gold" href="{{ $site['register_url'] }}" target="_blank" rel="noopener">Começar agora</a>
+            <a class="btn btn-gold" href="{{ $settings->platform_url ?? $site['register_url'] }}" target="_blank" rel="noopener">Começar agora</a>
         </div>
     </div>
 </section>
@@ -125,8 +125,13 @@
             <h2>Bonificações exclusivas</h2>
             <p>Aumente sua banca com benefícios pensados para quem joga sério.</p>
         </div>
+        @php
+            $bonusList = $bonificacoes->isNotEmpty()
+                ? $bonificacoes->map(fn ($b) => ['badge' => $b->valor, 'title' => $b->titulo, 'text' => $b->descricao])->all()
+                : $site['bonus'];
+        @endphp
         <div class="row g-4">
-            @foreach ($site['bonus'] as $b)
+            @foreach ($bonusList as $b)
                 <div class="col-md-4">
                     <article class="bonus-card reveal">
                         <div class="bonus-card__badge">{{ $b['badge'] }}</div>
@@ -137,7 +142,7 @@
             @endforeach
         </div>
         <div class="text-center mt-4 reveal">
-            <a class="btn btn-gold" href="{{ $site['register_url'] }}" target="_blank" rel="noopener">Garantir meu bônus</a>
+            <a class="btn btn-gold" href="{{ $settings->platform_url ?? $site['register_url'] }}" target="_blank" rel="noopener">Garantir meu bônus</a>
         </div>
     </div>
 </section>
@@ -150,8 +155,13 @@
             <h2>As principais loterias</h2>
             <p>Com sorteios o dia todo.</p>
         </div>
+        @php
+            $modalidadeList = $modalidades->isNotEmpty()
+                ? $modalidades->pluck('titulo')->all()
+                : $site['modalidades'];
+        @endphp
         <div class="modalidade-grid reveal">
-            @foreach ($site['modalidades'] as $mod)
+            @foreach ($modalidadeList as $mod)
                 <span class="modalidade-chip"><i class="fa-solid fa-ticket me-2"></i>{{ $mod }}</span>
             @endforeach
         </div>
@@ -164,7 +174,7 @@
         <span class="section-label">Pagamentos 24h</span>
         <h2>Ganhou? Sacou!</h2>
         <p>Receba seus prêmios sem complicação, com saques rápidos via PIX.</p>
-        <a class="btn btn-gold btn-lg" href="{{ $site['register_url'] }}" target="_blank" rel="noopener">Cadastre-se agora</a>
+        <a class="btn btn-gold btn-lg" href="{{ $settings->platform_url ?? $site['register_url'] }}" target="_blank" rel="noopener">Cadastre-se agora</a>
     </div>
 </section>
 
@@ -184,7 +194,7 @@
                         <span class="section-label">Palpites</span>
                         <h2>Entre para o grupo de palpites VIP</h2>
                         <p>Receba palpites diários e dicas exclusivas para aumentar suas chances. Conteúdo selecionado para quem quer jogar com mais informação.</p>
-                        <a class="btn btn-gold" href="{{ $site['vip_url'] }}" target="_blank" rel="noopener">
+                        <a class="btn btn-gold" href="{{ $settings->whatsapp_url ?? $site['vip_url'] }}" target="_blank" rel="noopener">
                             <i class="fab fa-whatsapp me-2"></i>Quero participar
                         </a>
                     </div>
@@ -203,20 +213,31 @@
             <p>Quem aposta na Águia Prime joga com segurança e recebe sem complicação.</p>
         </div>
 
+        @php
+            $premiosList = $resultados->isNotEmpty()
+                ? $resultados
+                : collect($site['premios'])->map(fn ($p, $i) => (object) [
+                    'titulo' => $p['label'],
+                    'valor' => $p['valor'],
+                    'imagem' => file_exists(public_path('img/premios/premio-' . ($i + 1) . '.jpg'))
+                        ? 'img/premios/premio-' . ($i + 1) . '.jpg'
+                        : null,
+                    'is_legacy' => true,
+                ]);
+        @endphp
         <div id="premiosCarousel" class="carousel slide premio-carousel reveal" data-bs-ride="carousel" data-bs-interval="4500">
             <div class="carousel-indicators">
-                @foreach ($site['premios'] as $i => $premio)
+                @foreach ($premiosList as $i => $premio)
                     <button type="button" data-bs-target="#premiosCarousel" data-bs-slide-to="{{ $i }}" class="{{ $i === 0 ? 'active' : '' }}" aria-current="{{ $i === 0 ? 'true' : 'false' }}" aria-label="Prêmio {{ $i + 1 }}"></button>
                 @endforeach
             </div>
             <div class="carousel-inner">
-                @foreach ($site['premios'] as $i => $premio)
+                @foreach ($premiosList as $i => $premio)
                     <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
                         <div class="premio-slide">
                             <div class="premio-slide__visual">
-                                @php $imgPath = public_path('img/premios/premio-' . ($i + 1) . '.jpg'); @endphp
-                                @if (file_exists($imgPath))
-                                    <img src="{{ asset('img/premios/premio-' . ($i + 1) . '.jpg') }}" alt="{{ $premio['label'] }} {{ $premio['valor'] }}" loading="lazy">
+                                @if (!empty($premio->imagem))
+                                    <img src="{{ !empty($premio->is_legacy) ? asset($premio->imagem) : asset('storage/' . $premio->imagem) }}" alt="{{ $premio->titulo }} {{ $premio->valor }}" loading="lazy">
                                 @else
                                     <div class="premio-slide__placeholder">
                                         <i class="fa-solid fa-trophy"></i>
@@ -225,8 +246,10 @@
                                 @endif
                             </div>
                             <div class="premio-slide__info">
-                                <span class="premio-slide__label">{{ $premio['label'] }}</span>
-                                <strong class="premio-slide__valor">{{ $premio['valor'] }}</strong>
+                                <span class="premio-slide__label">{{ $premio->titulo }}</span>
+                                @if (!empty($premio->valor))
+                                    <strong class="premio-slide__valor">{{ $premio->valor }}</strong>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -243,7 +266,7 @@
         </div>
 
         <div class="text-center mt-5 reveal">
-            <a class="btn btn-gold btn-lg" href="{{ $site['register_url'] }}" target="_blank" rel="noopener">Quero fazer parte</a>
+            <a class="btn btn-gold btn-lg" href="{{ $settings->platform_url ?? $site['register_url'] }}" target="_blank" rel="noopener">Quero fazer parte</a>
         </div>
     </div>
 </section>

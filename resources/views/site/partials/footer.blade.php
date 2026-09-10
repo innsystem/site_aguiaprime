@@ -11,8 +11,8 @@
                 </div>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <a class="btn btn-outline-gold btn-sm me-2 mb-2" href="{{ config('site.register_url') }}" target="_blank" rel="noopener">Cadastrar</a>
-                <a class="btn btn-gold btn-sm mb-2" href="{{ config('site.vip_url') }}" target="_blank" rel="noopener">Grupo VIP</a>
+                <a class="btn btn-outline-gold btn-sm me-2 mb-2" href="{{ $settings->platform_url ?? config('site.register_url') }}" target="_blank" rel="noopener">Cadastrar</a>
+                <a class="btn btn-gold btn-sm mb-2" href="{{ $settings->whatsapp_url ?? config('site.vip_url') }}" target="_blank" rel="noopener">Grupo VIP</a>
             </div>
         </div>
         <hr class="footer-divider">

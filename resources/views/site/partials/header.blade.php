@@ -19,7 +19,7 @@
                     <li class="nav-item"><a class="nav-link" href="#premios">Prêmios</a></li>
                     <li class="nav-item"><a class="nav-link" href="#vip">VIP</a></li>
                     <li class="nav-item ms-lg-2">
-                        <a class="btn btn-gold btn-sm px-3" href="{{ config('site.register_url') }}" target="_blank" rel="noopener">Cadastrar agora</a>
+                        <a class="btn btn-gold btn-sm px-3" href="{{ $settings->platform_url ?? config('site.register_url') }}" target="_blank" rel="noopener">Cadastrar agora</a>
                     </li>
                 </ul>
             </div>
@@ -44,7 +44,7 @@
             <li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="#premios">Prêmios</a></li>
             <li class="nav-item"><a class="nav-link" data-bs-dismiss="offcanvas" href="#vip">VIP</a></li>
         </ul>
-        <a class="btn btn-gold w-100 mt-4" href="{{ config('site.register_url') }}" target="_blank" rel="noopener">
+        <a class="btn btn-gold w-100 mt-4" href="{{ $settings->platform_url ?? config('site.register_url') }}" target="_blank" rel="noopener">
             <i class="fa-solid fa-rocket me-2"></i>Cadastrar agora
         </a>
     </div>
