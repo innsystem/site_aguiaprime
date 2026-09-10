@@ -1,13 +1,16 @@
 @extends('site.base_site')
 
 @section('title', ($settings->title ?? $site['name']) . ' — Cotações e saques rápidos')
+@section('meta_description', $settings->description ?? 'Águia Prime Loterias — cotações acima do mercado, saques rápidos via PIX e plataforma segura.')
+@section('canonical', route('home'))
+@section('og_image', asset('img/eagle-exec.webp'))
 
 @section('content')
 @php $videoUrl = $settings->video_embed_url; @endphp
 {{-- HERO --}}
 <section class="hero" id="inicio">
     <div class="hero__media" data-parallax>
-        <img src="{{ asset('img/eagle-exec.webp') }}" alt="" class="hero__img" fetchpriority="high">
+        <img src="{{ asset('img/eagle-exec.webp') }}" alt="{{ $settings->title ?? $site['name'] }} — apresentação visual" class="hero__img" fetchpriority="high" width="1920" height="1080">
         <div class="hero__veil"></div>
     </div>
     <div class="container hero__content">
