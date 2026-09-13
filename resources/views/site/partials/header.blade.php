@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
-                <img src="{{ asset('img/logo.png') }}" alt="Águia Prime Loterias" class="brand-logo" width="48" height="48">
+                <img src="{{ asset('img/logo.png?1') }}" alt="Águia Prime Loterias" class="brand-logo" width="48" height="48">
                 <span class="brand-text d-none d-sm-inline">Águia Prime</span>
             </a>
 
@@ -30,7 +30,7 @@
 <div class="offcanvas offcanvas-end nav-offcanvas" tabindex="-1" id="navOffcanvas" aria-labelledby="navOffcanvasLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="navOffcanvasLabel">
-            <img src="{{ asset('img/logo.png') }}" alt="" width="36" height="36" class="me-2">
+            <img src="{{ asset('img/logo.png?1') }}" alt="" width="36" height="36" class="me-2">
             Menu
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>

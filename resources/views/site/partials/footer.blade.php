@@ -3,7 +3,7 @@
         <div class="row align-items-center gy-4">
             <div class="col-md-6 text-center text-md-start">
                 <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-3 mb-3">
-                    <img src="{{ asset('img/logo.png') }}" alt="Águia Prime" width="52" height="52">
+                    <img src="{{ asset('img/logo.png?1') }}" alt="Águia Prime" width="128" height="128">
                     <div>
                         <strong class="footer-brand">Águia Prime Loterias</strong>
                         <p class="mb-0 small text-muted-gold">Entretenimento responsável</p>
