@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,22 @@ class RouteServiceProvider extends ServiceProvider
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
+        RateLimiter::for('palpites-gerar', function (Request $request) {
+            return Limit::perMinute(20)
+                ->by($request->ip())
+                ->response(function (Request $request, array $headers) {
+                    Log::warning('palpites.gerar.limite', ['ip' => $request->ip()]);
+
+                    return response()->json([
+                        'message' => 'Muitas tentativas. Aguarde um minuto.',
+                    ], 429, $headers);
+                });
+        });
+
+        RateLimiter::for('palpites-pagina', function (Request $request) {
+            return Limit::perMinute(120)->by($request->ip());
         });
     }
 }

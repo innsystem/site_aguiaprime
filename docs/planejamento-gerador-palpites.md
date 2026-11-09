@@ -588,19 +588,11 @@ Desktop + largura ~390px: landing → ferramenta → salvar → gerar → adicio
 8. Botões na landing + `noindex`
 9. Passada visual desktop/mobile + safe-area
 
-## 14. Imagem — etapa posterior
+## 14. Imagem
 
-Não desenhar a arte nesta entrega. A aba Enviar já terá seleção, nome da banca e link do app.
+A especificação da imagem, com os formatos 1:1 e 9:16, o desenho do cartaz e os botões de baixar e compartilhar, está em `docs/planejamento-imagem-palpites.md`.
 
-Referência atual (será substituída quando a arte Águia Prime existir):
-
-- Canvas 1080×1920, degradê, barra dourada, círculos suaves
-- Nome da banca, `PALPITES DO DIA`, data
-- Até 14 itens: linha + `Modalidade · bichos`
-- Link do app + `BOA SORTE!`
-- `navigator.share` ou download `palpites.png`
-
-Quando entrar: baixar e compartilhar como ações **separadas** (na referência o botão “Baixar” estava ligado ao gerar de novo).
+Esta entrega do gerador deixa o botão desabilitado. A imagem não altera o texto enviado ao representante.
 
 ## 15. Critérios para considerar a entrega pronta
 

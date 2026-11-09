@@ -9,10 +9,19 @@ use App\Http\Controllers\Admin\ResultadoController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PalpiteController;
 use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/palpites', [PalpiteController::class, 'index'])
+    ->middleware('throttle:palpites-pagina')
+    ->name('palpites');
+
+Route::post('/palpites/gerar', [PalpiteController::class, 'gerar'])
+    ->middleware('throttle:palpites-gerar')
+    ->name('palpites.gerar');
 
 Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
