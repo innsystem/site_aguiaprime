@@ -16,6 +16,7 @@ class SeoController extends Controller
             'Disallow: /admin',
             'Disallow: /admin/',
             'Disallow: /login',
+            'Disallow: /palpites',
             '',
             'Sitemap: '.$sitemap,
             '',

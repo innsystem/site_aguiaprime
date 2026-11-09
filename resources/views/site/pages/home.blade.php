@@ -26,6 +26,7 @@
             <a class="btn btn-gold btn-lg" href="{{ $settings->platform_url ?? $site['register_url'] }}" target="_blank" rel="noopener">
                 Cadastrar agora <i class="fa-solid fa-arrow-right ms-2"></i>
             </a>
+            <a class="btn btn-ghost btn-lg" href="{{ route('palpites') }}">Gerar Palpites</a>
             @if ($videoUrl)
                 <a class="btn btn-ghost btn-lg" href="#video">Assistir apresentação</a>
             @endif
