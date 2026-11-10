@@ -71,6 +71,19 @@
         return digitos;
     }
 
+    function normalizarLink(valor) {
+        let limpo = String(valor || '').trim();
+        while (/^https?:\/\//i.test(limpo)) {
+            limpo = limpo.replace(/^https?:\/\//i, '');
+        }
+        return limpo.replace(/^\/+/, '').slice(0, 200);
+    }
+
+    function linkCompleto(valor) {
+        const limpo = normalizarLink(valor);
+        return limpo ? 'https://' + limpo : '';
+    }
+
     function configUtilizavel(config) {
         if (!config || typeof config.nome !== 'string') return false;
         if (config.nome.trim().length < 2 || config.nome.trim().length > 80) return false;
@@ -195,9 +208,11 @@
 
     function validarFormulario() {
         const nome = $('nome').value.trim();
-        const link = $('link').value.trim();
+        const link = normalizarLink($('link').value);
         const telefone = normalizarTelefone($('whatsapp').value);
         let foco = null;
+
+        $('link').value = link;
 
         if (nome.length < 2) {
             mostrarErro('erro-nome', 'Informe o nome da banca (mínimo de 2 caracteres).');
@@ -231,7 +246,7 @@
     function preencherFormulario() {
         if (!estado.config) return;
         $('nome').value = estado.config.nome || '';
-        $('link').value = estado.config.link || '';
+        $('link').value = normalizarLink(estado.config.link || '');
         const telefone = normalizarTelefone(estado.config.representante || '');
         $('whatsapp').value = telefone ? mascaraTelefone(telefone) : (estado.config.representante || '');
         atualizarBotaoGerar();
@@ -445,10 +460,13 @@
             ? estado.config.nome.trim()
             : boot.tituloPadrao;
         const data = new Date().toLocaleDateString('pt-BR');
+        const url = linkCompleto(estado.config && estado.config.link);
         const linhas = itens.map(function (item) {
             return '• ' + nomeModalidade(item.modalidade) + ': ' + item.linha + ' (' + item.bichos + ')';
         });
-        return '🎲 *Jogo para registro* — ' + nome + '\n📅 ' + data + '\n\n' + linhas.join('\n') + '\n\nAguardo confirmação!';
+        let texto = '🎲 *Jogo para registro* — ' + nome + '\n📅 ' + data;
+        if (url) texto += '\n🔗 ' + url;
+        return texto + '\n\n' + linhas.join('\n') + '\n\nAguardo confirmação!';
     }
 
     function renderEnviar() {
@@ -600,7 +618,7 @@
         const nome = estado.config && estado.config.nome.trim()
             ? estado.config.nome.trim()
             : boot.tituloPadrao;
-        const link = estado.config && estado.config.link ? estado.config.link.trim() : '';
+        const link = linkCompleto(estado.config && estado.config.link);
         const caixa = $('imagem-palpites');
         desenho.desenhar({
             formato: formato,
@@ -710,6 +728,16 @@
         $('whatsapp').addEventListener('blur', function () {
             const telefone = normalizarTelefone($('whatsapp').value);
             if (telefone) $('whatsapp').value = mascaraTelefone(telefone);
+        });
+
+        $('link').addEventListener('blur', function () {
+            $('link').value = normalizarLink($('link').value);
+        });
+
+        $('link').addEventListener('paste', function () {
+            setTimeout(function () {
+                $('link').value = normalizarLink($('link').value);
+            }, 0);
         });
 
         $('ir-gerar').addEventListener('click', function () {

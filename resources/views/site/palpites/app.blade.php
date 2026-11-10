@@ -26,7 +26,11 @@
                 <p id="erro-nome" class="erro" hidden></p>
 
                 <label for="link">Link do app</label>
-                <input id="link" name="link" type="text" maxlength="200" inputmode="url" autocomplete="url" placeholder="Ex.: app.suabanca.com.br">
+                <div class="campo-url">
+                    <span class="campo-url__prefixo" aria-hidden="true">https://</span>
+                    <input id="link" name="link" type="text" maxlength="200" inputmode="url" autocomplete="url" placeholder="app.suabanca.com.br" spellcheck="false">
+                </div>
+                <p class="ajuda">Se colar um link com http ou https, o prefixo não se repete.</p>
                 <p id="erro-link" class="erro" hidden></p>
 
                 <label for="whatsapp">WhatsApp do representante</label>
@@ -212,6 +216,6 @@
     window.PalpitesBoot = @json($boot);
 </script>
 <script src="{{ asset('js/palpites-gerador.js') }}?v=4"></script>
-<script src="{{ asset('js/palpites-imagem.js') }}?v=2"></script>
-<script src="{{ asset('js/palpites.js') }}?v=5"></script>
+<script src="{{ asset('js/palpites-imagem.js') }}?v=3"></script>
+<script src="{{ asset('js/palpites.js') }}?v=6"></script>
 @endsection

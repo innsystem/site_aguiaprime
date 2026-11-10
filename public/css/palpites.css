@@ -113,6 +113,41 @@ input, select, textarea {
     min-height: 48px;
 }
 
+.campo-url {
+    display: flex;
+    align-items: stretch;
+    border-radius: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(0, 0, 0, 0.28);
+    overflow: hidden;
+}
+
+.campo-url__prefixo {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.35rem 0 0.95rem;
+    color: var(--gold-bright);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.campo-url input {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding-left: 0.2rem;
+    min-width: 0;
+}
+
+.campo-url:focus-within {
+    outline: 2px solid var(--gold-bright);
+    outline-offset: 2px;
+}
+
+.campo-url input:focus-visible {
+    outline: none;
+}
+
 textarea { resize: vertical; min-height: 9rem; }
 
 select option { color: #111; }
