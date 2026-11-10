@@ -42,7 +42,12 @@
     }
 
     function limparLink(valor) {
-        return umaLinha(valor, 200).replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+        var limpo = umaLinha(valor, 220);
+        while (/^https?:\/\//i.test(limpo)) {
+            limpo = limpo.replace(/^https?:\/\//i, '');
+        }
+        limpo = limpo.replace(/^\/+/, '').replace(/\/+$/, '');
+        return limpo ? 'https://' + limpo.slice(0, 200) : '';
     }
 
     function fontesProntas() {
